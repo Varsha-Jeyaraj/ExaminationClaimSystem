@@ -35,11 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: dashboardMA.php');
                 exit; // Stop script execution after redirection
             }
-            if ($user['usertype'] == "DCS Staff") {
+            if ($user['usertype'] == "Staff") {
                 header('Location: dashboardDCSStaff.php');
                 exit;
             }
-            if ($user['usertype'] == "DCS Head") {
+            if ($user['usertype'] == "Head") {
                 header('Location: dashboardDCSHead.php');
                 exit;
             }
