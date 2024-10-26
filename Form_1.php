@@ -36,10 +36,6 @@ $user = $_SESSION['user'];
             margin-right: -20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
-        .form-container {
-        max-width: 700px; /* Set max-width to 600px */
-        margin: 0 auto; /* Center the form */
-    }
         /* Optional: Custom styles for quick actions card */
         .card {
             margin-top: 20px;
@@ -51,37 +47,52 @@ $user = $_SESSION['user'];
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
+            <!-- Brand -->
             <a class="navbar-brand" href="#">Examination Claim System</a>
+            <!-- Toggler/collapsible Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" 
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav me-auto mb-5 mb-lg-0">
-                    <li class="nav-item">
+                     <!-- nav Dashboard -->
+                     <li class="nav-item">
                         <a class="nav-link" href="dashboard.php">Home</a>
                     </li>
-                
+                    <!-- Fill Form Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="fillFormDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Fill Form
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="fillFormDropdown">
+                            
+                            <li><a class="dropdown-item" href="Form_2.php">For Evaluation</a></li>
+                            <li><a class="dropdown-item" href="Form_3.php">Form 3</a></li>
+                        </ul>
+                    </li>
+                    <!-- Other Navigation Links -->
                     <li class="nav-item">
-                        <a class="nav-link" href="payment.php">Payment Details</a>
+                        <a class="nav-link" href="payment.php">View Payment Details</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="summary.php">Summary</a>
+                        <a class="nav-link" href="summary.php">View Summary</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="approved.php">Approved</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Registerform.php">Add User</a>
+                        <a class="nav-link" href="approved.php">Check Approved Sheet</a>
                     </li>
                 </ul>
+                <!-- User Dropdown -->
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo htmlspecialchars($user['usertype']." : ".$user['name']); ?>
+                            <?php echo htmlspecialchars($user['role']); ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <!-- Optional: Add Profile and Settings links if available -->
                             <li><a class="dropdown-item" href="profile.php">Profile</a></li>
                             <li><a class="dropdown-item" href="settings.php">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
@@ -92,6 +103,7 @@ $user = $_SESSION['user'];
             </div>
         </div>
     </nav>
+
     <!-- Main Content Area -->
     <div class="container form-container">
         <div class="header">
@@ -112,56 +124,29 @@ $user = $_SESSION['user'];
                     <option>Dr. E. Y. A. Charles</option>
                     <option>Dr. K. Thabotharan</option>
                     <option>Prof. A. Ramanan</option>
-                    <option>Dr. (Mrs.) B. Mayurathan</option>
+                    <option>Dr. (Mrs). B. Mayurathan</option>
                     <option>Mr. S. Suthakar</option>
                     <option>Prof. M. Siyamalan</option>
                     <option>Dr. S. Shriparen</option>
                     <option>Dr. K. Sarveswaran</option>
                     <option>Dr. T. Kokul</option>
-                    <option>Dr. (Ms.) J. Samantha Tharani</option>
-                    <option>Dr. (Ms.) R. Nirthika</option>
+                    <option>Ms. J. Samantha Tharani</option>
+                    <option>Ms. R. Nirthika</option>
                     <option>Ms. M. Mayuravaani</option>
                 </select>
             </div>
             
-            <!-- NIC Number -->
-            <div class="mb-3">
-                <label for="NIC" class="form-label">NIC Number:</label>
-                <input type="text" id="NIC" name="NIC" class="form-control" placeholder="Enter NIC Number" required>
-            </div>
+            
             
             <!-- Year and Semester -->
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="year" class="form-label">Year:</label>
-                    <input type="number" id="year" name="year" class="form-control" min="2023" placeholder="Enter Year" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="semester" class="form-label">Semester:</label>
-                    <select id="semester" name="semester" class="form-select" required>
-                        <option selected disabled value="">Select Semester</option>
-                        <option>Semester 1</option>
-                        <option>Semester 2</option>
-                    </select>
-                </div>
-            </div>
-            
-            <!-- Name of Examination -->
             <div class="mb-3">
-                <label for="examName" class="form-label">Name of Examination:</label>
-                <select id="examName" name="examName" class="form-select" required>
-                    <option selected disabled value="">Select Exam Name</option>
-                    <option>General Degree Examination in Science, Level 1G</option>
-                    <option>BSc Degree Examination in Computer Science, Level 1S</option>
-                    <option>General Degree Examination in Science, Level 2G</option>
-                    <option>BSc Degree Examination in Computer Science, Level 2S</option>
-                    <option>General Degree Examination in Science, Level 3G</option>
-                    <option>BSc Degree Examination in Computer Science, Level 3S</option>
-                    <option>General Degree Examination in Science, Level 3M</option>
-                    <option>BSc Hons Degree Examination in Computer Science, Level 4S</option>
-                    <option>Honours Degree Examination in Computer Science, Level 4M</option>
-                </select>
+                <label for="code" class="form-label">Course Code:</label>
+                <input type="text" id="code" name="code" class="form-control" placeholder="Enter Course Code" required>
             </div>
+                
+            
+            
+            
             
             <!-- Exam Type -->
             <fieldset class="mb-3">
@@ -208,10 +193,21 @@ $user = $_SESSION['user'];
                 </select>
             </div>
             
+            <!-- Amount for essay-->
+            <div class="mb-3">
+            <label for="amount1" class="form-label">Amount (Rs. 400 per hour):</label>
+            <input type="text" id="amount1" name="amount1" class="form-control" readonly>
+            </div>
+
             <!-- Number of MCQ Questions -->
             <div class="mb-3">
                 <label for="mcqCount" class="form-label">Number of MCQ Questions:</label>
                 <input type="number" id="mcqCount" name="mcqCount" class="form-control" min="0" placeholder="Number of Questions" required>
+            </div>
+
+            <div class="mb-3">
+            <label for="amount2" class="form-label">Amount (Rs. 50 per question):</label>
+            <input type="text" id="amount2" name="amount2" class="form-control" readonly>
             </div>
             
             <!-- Typing Pages -->
@@ -226,17 +222,99 @@ $user = $_SESSION['user'];
                     <option>5 Pages</option>
                 </select>
             </div>
+
+            <div class="mb-3">
+            <label for="amount3" class="form-label">Amount (Rs. 100 per page):</label>
+            <input type="text" id="amount3" name="amount3" class="form-control" readonly>
+            </div>
+
+            <!-- Total Amount -->
+            <div class="mb-3">
+                <label for="totalAmount" class="form-label">Total Amount (Rs.):</label>
+                <input type="text" id="totalAmount" name="totalAmount" class="form-control" readonly>
+            </div>
+
+            
             
             <!-- Submit and Reset Buttons -->
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <button type="submit" class="btn btn-primary submit-btn">Submit</button>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <button type="reset" class="btn btn-secondary btn-danger reset-btn">Reset</button>
+            <div class="col-md-12 mb-3">
+                <button type="submit" class="btn btn-primary me-2 submit-btn">Submit</button>
+                <button type="reset" class="btn btn-secondary btn-danger reset-btn">Reset</button>
                 </div>
             </div>
-        </form>
+
+
+
+            
+
+<!-- JavaScript to calculate amount -->
+    <script>
+
+    function updateTotalAmount() {
+        const amount1 = parseFloat(document.getElementById('amount1').value.replace('Rs. ', '')) || 0;
+        const amount2 = parseFloat(document.getElementById('amount2').value.replace('Rs. ', '')) || 0;
+        const amount3 = parseFloat(document.getElementById('amount3').value.replace('Rs. ', '')) || 0;
+        
+        const totalAmount = amount1 + amount2 + amount3;
+        
+        document.getElementById('totalAmount').value = totalAmount ? `Rs. ${totalAmount}` : '';
+       
+    }
+
+    document.getElementById('essayDuration').addEventListener('change', function() {
+        // Get the selected duration value
+        const duration = parseInt(this.value);
+        
+        // Define the rate (400 Rs per hour)
+        const ratePerHour = 400;
+        
+        // Calculate the amount
+        const amount1 = duration * ratePerHour;
+        
+        // Display the amount in the amount input field
+        document.getElementById('amount1').value = amount1 ? `Rs. ${amount1}` : '';
+        updateTotalAmount();
+    });
+
+    //mcq amount
+    document.getElementById('mcqCount').addEventListener('change', function() {
+        
+        const count = parseInt(this.value);
+        
+        // Define the rate (400 Rs per hour)
+        const ratePerQs = 50;
+        
+        // Calculate the amount
+        const amount2 = count * ratePerQs;
+        
+        // Display the amount in the amount input field
+        document.getElementById('amount2').value = amount2 ? `Rs. ${amount2}` : '';
+        updateTotalAmount();
+    });
+
+    //typing amount
+    document.getElementById('typingPages').addEventListener('change', function() {
+        
+        const pages = parseInt(this.value);
+        
+        // Define the rate (400 Rs per hour)
+        const ratePerPage = 100;
+        
+        // Calculate the amount
+        const amount3 = pages * ratePerPage;
+        
+        // Display the amount in the amount input field
+        document.getElementById('amount3').value = amount3 ? `Rs. ${amount3}` : '';
+        updateTotalAmount();
+    });
+
+
+
+
+
+    </script>
+    </form>
     </div>
 
     <!-- Bootstrap JS Bundle (Includes Popper) -->
