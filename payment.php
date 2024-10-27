@@ -12,17 +12,6 @@ $user = $_SESSION['user'];
 
 // Handle staff selection
 $selected_staff = $_POST['staff'] ?? 'all';
-$sql = ($selected_staff == 'all') ? 
-    "SELECT staffName, courseCode, examType, preparationType, essayDuration, essayAmount, mcqCount, mcqAmount, pageCount,typingAmount, totalAmount FROM form1" :
-    "SELECT staffName,courseCode,examType,preparationType, essayDuration, essayAmount, mcqCount, mcqAmount, pageCount,typingAmount, totalAmount FROM form1 WHERE StaffName = ?";
-
-// Prepare and execute the query
-$stmt = $conn->prepare($sql);
-if ($selected_staff != 'all') {
-    $stmt->bind_param("s", $selected_staff); // Bind selected staff name if specific staff is chosen
-}
-$stmt->execute();
-$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -43,13 +32,18 @@ $result = $stmt->get_result();
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 20px;
-            margin-left: -20px;
-            margin-right: -20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         .content {
             max-width: 1000px;
             margin: 0 auto;
+        }
+        .staff-details {
+            background-color: #e9ecef;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -116,80 +110,89 @@ $result = $stmt->get_result();
         </div>
     </form>
 
-    <!-- Payment Details Table -->
-    <table class="table table-striped">
-        <thead>
-            <tr>
-            <th colspan="10">
-                        <?php
-                        if ($selected_staff && $selected_staff !== "All") {
-                            // Fetch the specific staff's information
-                            $staff_details_sql = "SELECT name, nic, designation FROM userdetails WHERE name = ?";
-                            $staff_stmt = $conn->prepare($staff_details_sql);
-                            $staff_stmt->bind_param("s", $selected_staff);
-                            $staff_stmt->execute();
-                            $staff_details_result = $staff_stmt->get_result();
-                            $staff_details = $staff_details_result->fetch_assoc();
-
-                            // Display selected staff information if found
-                            if ($staff_details) {
-                                echo htmlspecialchars($staff_details['name']) . " | NIC: " . htmlspecialchars($staff_details['nic']) . " | Designation: " . htmlspecialchars($staff_details['designation']);
-                            } else {
-                                echo "Staff details not available";
-                            }
-                            $staff_stmt->close();
-                        } elseif($selected_staff == "All") {
-                            echo "All Staff Payment Details";
-                        }
-                        ?>
-                    </th>
-            </tr>
-            <tr>
-                <th scope="col">Course Code</th>
-                <th scope="col">Exam Type</th>
-                <th scope="col">Preparation Type</th>
-                <th scope="col">Essay Duration</th>
-                <th scope="col">Amount for Essay</th>
-                <th scope="col">MCQ Count</th>
-                <th scope="col">Amount for MCQ</th>
-                <th scope="col">Pages Count</th>
-                <th scope="col">Amount for Typing</th>
-                <th scope="col">Total Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            // Display fetched data
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "
-                        <tr>
-                            <td>{$row['courseCode']}</td>
-                            <td>{$row['examType']}</td>
-                            <td>{$row['preparationType']}</td>
-                            <td>{$row['essayDuration']}</td>
-                            <td>{$row['essayAmount']}</td>
-                            <td>{$row['mcqCount']}</td>
-                            <td>{$row['mcqAmount']}</td>
-                            <td>{$row['pageCount']}</td>
-                            <td>{$row['typingAmount']}</td>
-                            <td>{$row['totalAmount']}</td>
-                        </tr>";
+    <?php
+    // If "All" is selected, get all staff payment details grouped by staff
+    if ($selected_staff == 'all') {
+        $staff_sql = "SELECT staffName, courseCode, examType, preparationType, essayDuration, essayAmount, mcqCount, mcqAmount, pageCount, typingAmount, totalAmount FROM form1 ORDER BY staffName";
+        $result = $conn->query($staff_sql);
+        
+        if ($result->num_rows > 0) {
+            $current_staff = '';
+            while ($row = $result->fetch_assoc()) {
+                if ($current_staff != $row['staffName']) {
+                    if ($current_staff != ''){
+                        echo "<tr><td colspan='9' class='text-end'><strong>Grand Total:</strong></td><td><strong>" . number_format($grandTotal, 2) . "</strong></td></tr>";
+                        echo '</tbody></table><br>';
+                    }
+                    $current_staff = $row['staffName'];
+                    $grandTotal = 0;
+                    
+                    // Get and display specific staff details
+                    $staff_details_sql = "SELECT name, nic, designation FROM userdetails WHERE name = ?";
+                    $staff_stmt = $conn->prepare($staff_details_sql);
+                    $staff_stmt->bind_param("s", $current_staff);
+                    $staff_stmt->execute();
+                    $staff_details = $staff_stmt->get_result()->fetch_assoc();
+                    echo '<div class="staff-details">' . htmlspecialchars($staff_details['name']) . " | NIC: " . htmlspecialchars($staff_details['nic']) . " | Designation: " . htmlspecialchars($staff_details['designation']) . '</div>';
+                    $staff_stmt->close();
+                    
+                    // Start new table for each staff
+                    echo '<table class="table table-striped"><thead><tr><th>Course Code</th><th>Exam Type</th><th>Preparation Type</th><th>Essay Duration</th><th>Amount for Essay</th><th>MCQ Count</th><th>Amount for MCQ</th><th>Pages Count</th><th>Amount for Typing</th><th>Total Amount</th></tr></thead><tbody>';
                 }
-            } else {
-                echo "<tr><td colspan='10'>No records found.</td></tr>";
+
+                $grandTotal += $row['totalAmount'];
+
+                // Display staff details in rows
+                echo "
+                    <tr>
+                        <td>{$row['courseCode']}</td>
+                        <td>{$row['examType']}</td>
+                        <td>{$row['preparationType']}</td>
+                        <td>{$row['essayDuration']}</td>
+                        <td>{$row['essayAmount']}</td>
+                        <td>{$row['mcqCount']}</td>
+                        <td>{$row['mcqAmount']}</td>
+                        <td>{$row['pageCount']}</td>
+                        <td>{$row['typingAmount']}</td>
+                        <td>{$row['totalAmount']}</td>
+                    </tr>";
             }
-            ?>
-        </tbody>
-    </table>
+            echo "<tr><td colspan='9' class='text-end'><strong>Grand Total:</strong></td><td><strong>" . number_format($grandTotal, 2) . "</strong></td></tr>";
+            echo '</tbody></table>';// Close the last table
+        } else {
+            echo "<p>No records found.</p>";
+        }
+    } else {
+        $grandTotal=0;
+        // If specific staff is selected, show only that staff's details
+        $staff_details_sql = "SELECT name, nic, designation FROM userdetails WHERE name = ?";
+        $staff_stmt = $conn->prepare($staff_details_sql);
+        $staff_stmt->bind_param("s", $selected_staff);
+        $staff_stmt->execute();
+        $staff_details = $staff_stmt->get_result()->fetch_assoc();
+        echo '<div class="staff-details">' . htmlspecialchars($staff_details['name']) . " | NIC: " . htmlspecialchars($staff_details['nic']) . " | Designation: " . htmlspecialchars($staff_details['designation']) . '</div>';
+        $staff_stmt->close();
+
+        $stmt = $conn->prepare("SELECT courseCode, examType, preparationType, essayDuration, essayAmount, mcqCount, mcqAmount, pageCount, typingAmount, totalAmount FROM form1 WHERE staffName = ?");
+        $stmt->bind_param("s", $selected_staff);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            echo '<table class="table table-striped"><thead><tr><th>Course Code</th><th>Exam Type</th><th>Preparation Type</th><th>Essay Duration</th><th>Amount for Essay</th><th>MCQ Count</th><th>Amount for MCQ</th><th>Pages Count</th><th>Amount for Typing</th><th>Total Amount</th></tr></thead><tbody>';
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr><td>{$row['courseCode']}</td><td>{$row['examType']}</td><td>{$row['preparationType']}</td><td>{$row['essayDuration']}</td><td>{$row['essayAmount']}</td><td>{$row['mcqCount']}</td><td>{$row['mcqAmount']}</td><td>{$row['pageCount']}</td><td>{$row['typingAmount']}</td><td>{$row['totalAmount']}</td></tr>";
+                $grandTotal += $row['totalAmount'];
+            }
+            echo "<tr><td colspan='9' class='text-end'><strong>Grand Total:</strong></td><td><strong>" . number_format($grandTotal, 2) . "</strong></td></tr>";
+            echo '</tbody></table>';
+        } else {
+            echo "<p>No records found for the selected staff.</p>";
+        }
+        $stmt->close();
+    }
+    $conn->close();
+    ?>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
 
-<?php
-// Close database connection and statement
-$stmt->close();
-$conn->close();
-?>
