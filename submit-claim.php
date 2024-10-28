@@ -1,0 +1,49 @@
+<?php
+// Connect to the database
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "examination_claim_system";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data with checks for undefined keys
+    $staffName = isset($_POST['StaffName']) ? $_POST['StaffName'] : '';
+    $courseCode = isset($_POST['CourseCode']) ? $_POST['CourseCode'] : '';
+    $examType = isset($_POST['ExamType']) ? $_POST['ExamType'] : '';
+    $preparationType = isset($_POST['PreparationType']) ? $_POST['PreparationType'] : '';
+    $essayDuration = isset($_POST['EssayDuration']) ? (double)$_POST['EssayDuration'] : 0.0;
+    $essayAmount = isset($_POST['EssayPayment']) ? (double)str_replace('Rs. ', '', $_POST['EssayPayment']) : 0.0;
+    $mcqCount = isset($_POST['MCQcount']) ? (int)$_POST['MCQcount'] : 0;
+    $mcqAmount = isset($_POST['MCQpayment']) ? (double)str_replace('Rs. ', '', $_POST['MCQpayment']) : 0.0;
+    $pageCount = isset($_POST['PageCount']) ? (int)$_POST['PageCount'] : 0;
+    $typingAmount = isset($_POST['TypingPayment']) ? (double)str_replace('Rs. ', '', $_POST['TypingPayment']) : 0.0;
+    $totalAmount = isset($_POST['TotalAmount']) ? (double)str_replace('Rs. ', '', $_POST['TotalAmount']) : 0.0;
+
+    if (empty($staffName) || empty($courseCode)) {
+        die("Staff Name and Course Code are required fields.");
+    }
+
+    // Prepare and bind
+    $stmt = $conn->prepare("INSERT INTO form1 (StaffName, CourseCode, ExamType, PreparationType, EssayDuration, EssayPayment, MCQcount, MCQpayment, PageCount, TypingPayment, TotalAmount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssidididd", $staffName, $courseCode, $examType, $preparationType, $essayDuration, $essayAmount, $mcqCount, $mcqAmount, $pageCount, $typingAmount, $totalAmount);
+
+    // Execute the statement
+    if ($stmt->execute()) {
+        echo "Claim submitted successfully!";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+}
+
+$conn->close();
+?>
