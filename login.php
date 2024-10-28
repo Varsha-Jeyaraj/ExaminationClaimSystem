@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit; // Stop script execution after redirection
             }
             if ($user['usertype'] == "Staff") {
-                header('Location: dashboardDCSStaff.php');
+                header('Location: staffView.php');
                 exit;
             }
             if ($user['usertype'] == "Head") {
