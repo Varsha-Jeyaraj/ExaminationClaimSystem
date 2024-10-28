@@ -1,13 +1,3 @@
-<?php
-session_start();
-$error_message = '';
-
-if (isset($_SESSION['error_message'])) {
-    $error_message = $_SESSION['error_message'];
-    unset($_SESSION['error_message']); // Clear the error message after displaying it
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,9 +99,3 @@ if (isset($_SESSION['error_message'])) {
     
 </body>
 </html>
-
-<?php if (!empty($error_message)): ?>
-    <div class="alert alert-danger">
-        <?php echo htmlspecialchars($error_message); ?>
-    </div>
-<?php endif; ?>

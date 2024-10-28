@@ -11,7 +11,7 @@ if (!isset($_SESSION['user'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claim Summary</title>
+    <title>Approved Sheet</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -39,32 +39,30 @@ if (!isset($_SESSION['user'])) {
 
 <div class="content">
     <div class="header">
-        <h2>Claim Summary</h2>
+        <h2>Approved Claims</h2>
     </div>
-    
-    <p><!-- Display summary of claims here --></p>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">Claim ID</th>
                 <th scope="col">Staff Name</th>
                 <th scope="col">Amount</th>
-                <th scope="col">Status</th>
+                <th scope="col">Date Approved</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Example summary data -->
+            <!-- Example approved claims data -->
             <tr>
                 <td>001</td>
                 <td>John Doe</td>
                 <td>$500</td>
-                <td>Approved</td>
+                <td>2024-01-05</td>
             </tr>
             <tr>
                 <td>002</td>
                 <td>Jane Smith</td>
                 <td>$300</td>
-                <td>Pending</td>
+                <td>2024-01-10</td>
             </tr>
             <!-- Additional rows can be added here -->
         </tbody>
