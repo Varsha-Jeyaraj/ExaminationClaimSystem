@@ -11,6 +11,9 @@ if (!isset($_SESSION['user'])) {
 // Retrieve user information from the session
 $user = $_SESSION['user'];
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,11 +117,11 @@ $user = $_SESSION['user'];
 
 
     <div class="container form-container">
-        <form action="/submit-claim" method="post">            
+        <form action="submit-claim.php" method="post">           
             <!-- Staff Name -->
             <div class="mb-3">
-                <label for="staffName" class="form-label">Staff Name:</label>
-                <select id="staffName" name="staffName" class="form-select" required>
+                <label for="StaffName" class="form-label">Staff Name:</label>
+                <select id="StaffName" name="StaffName" class="form-select" required>
                     <option selected disabled value="">Select Staff Name</option>
                     <option>Dr. S. Mahesan</option>
                     <option>Dr. E. Y. A. Charles</option>
@@ -140,8 +143,8 @@ $user = $_SESSION['user'];
             
             <!-- Year and Semester -->
             <div class="mb-3">
-                <label for="courseCode" class="form-label">Course Code:</label>
-                <input type="text" id="courseCode" name="courseCode" class="form-control" placeholder="Enter Course Code" required>
+                <label for="CourseCode" class="form-label">Course Code:</label>
+                <input type="text" id="CourseCode" name="CourseCode" class="form-control" placeholder="Enter Course Code" required>
             </div>
                 
             
@@ -152,13 +155,13 @@ $user = $_SESSION['user'];
             <fieldset class="mb-3">
                 <legend class="col-form-label pt-0">Exam Type:</legend>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="examType" id="theory" value="Theory" required>
+                    <input class="form-check-input" type="radio" name="ExamType" id="theory" value="Theory">
                     <label class="form-check-label" for="theory">
                         Theory
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="examType" id="practical" value="Practical" required>
+                    <input class="form-check-input" type="radio" name="ExamType" id="practical" value="Practical">
                     <label class="form-check-label" for="practical">
                         Practical
                     </label>
@@ -169,13 +172,13 @@ $user = $_SESSION['user'];
             <fieldset class="mb-3">
                 <legend class="col-form-label pt-0">Setting or Moderating:</legend>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="preparationType" id="Setting" value="Setting" required>
+                    <input class="form-check-input" type="radio" name="PreparationType" id="Setting" value="Setting">
                     <label class="form-check-label" for="Setting">
                         Setting
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="preparationType" id="Moderating" value="Moderating" required>
+                    <input class="form-check-input" type="radio" name="PreparationType" id="Moderating" value="Moderating">
                     <label class="form-check-label" for="Moderating">
                         Moderating
                     </label>
@@ -184,8 +187,8 @@ $user = $_SESSION['user'];
             
             <!-- Essay Duration -->
             <div class="mb-3">
-                <label for="essayDuration" class="form-label">Essay Duration:</label>
-                <select id="essayDuration" name="essayDuration" class="form-select" required>
+                <label for="EssayDuration" class="form-label">Essay Duration:</label>
+                <select id="EssayDuration" name="EssayDuration" class="form-select" required>
                     <option selected disabled value="">Select Duration</option>
                     <option>1 Hour</option>
                     <option>2 Hours</option>
@@ -195,25 +198,25 @@ $user = $_SESSION['user'];
             
             <!-- Amount for essay-->
             <div class="mb-3">
-            <label for="essayAmount" class="form-label">Amount (Rs. 400 per hour):</label>
-            <input type="text" id="essayAmount" name="essayAmount" class="form-control" readonly>
+            <label for="EssayPayment" class="form-label">Amount (Rs. 400 per hour):</label>
+            <input type="text" id="EssayPayment" name="EssayPayment" class="form-control" readonly>
             </div>
 
             <!-- Number of MCQ Questions -->
             <div class="mb-3">
-                <label for="mcqCount" class="form-label">Number of MCQ Questions:</label>
-                <input type="number" id="mcqCount" name="mcqCount" class="form-control" min="0" placeholder="Number of Questions" required>
+                <label for="MCQcount" class="form-label">Number of MCQ Questions:</label>
+                <input type="number" id="MCQcount" name="MCQcount" class="form-control" min="0" placeholder="Number of Questions" required>
             </div>
 
             <div class="mb-3">
-            <label for="mcqAmount" class="form-label">Amount (Rs. 50 per question):</label>
-            <input type="text" id="mcqAmount" name="mcqAmount" class="form-control" readonly>
+            <label for="MCQpayment" class="form-label">Amount (Rs. 50 per question):</label>
+            <input type="text" id="MCQpayment" name="MCQpayment" class="form-control" readonly>
             </div>
             
             <!-- Typing Pages -->
             <div class="mb-3">
-                <label for="pageCount" class="form-label">Typing:</label>
-                <select id="pageCount" name="pageCount" class="form-select" required>
+                <label for="PageCount" class="form-label">Typing:</label>
+                <select id="PageCount" name="PageCount" class="form-select" required>
                     <option selected disabled value="">Select Pages</option>
                     <option>1 Page</option>
                     <option>2 Pages</option>
@@ -224,14 +227,20 @@ $user = $_SESSION['user'];
             </div>
 
             <div class="mb-3">
-            <label for="typingAmount" class="form-label">Amount (Rs. 100 per page):</label>
-            <input type="text" id="typingAmount" name="typingAmount" class="form-control" readonly>
+            <label for="TypingPayment" class="form-label">Amount :</label>
+            <input type="text" id="TypingPayment" name="TypingPayment" class="form-control" readonly>
             </div>
+            <!-- Packeting Supervision -->
+            <div class="mb-3">
+            <label for="supervisionAmount" class="form-label">Packeting Supervision :</label>
+            <input type="text" id="supervisionAmount" name="supervisionAmount" class="form-control" value="Rs. 100" readonly>
+            </div>
+
 
             <!-- Total Amount -->
             <div class="mb-3">
-                <label for="totalAmount" class="form-label">Total Amount (Rs.):</label>
-                <input type="text" id="totalAmount" name="totalAmount" class="form-control" readonly>
+                <label for="TotalAmount" class="form-label">Total Amount (Rs.):</label>
+                <input type="text" id="TotalAmount" name="TotalAmount" class="form-control" readonly>
             </div>
 
             
@@ -252,17 +261,31 @@ $user = $_SESSION['user'];
     <script>
 
     function updateTotalAmount() {
-        const amount1 = parseFloat(document.getElementById('amount1').value.replace('Rs. ', '')) || 0;
-        const amount2 = parseFloat(document.getElementById('amount2').value.replace('Rs. ', '')) || 0;
-        const amount3 = parseFloat(document.getElementById('amount3').value.replace('Rs. ', '')) || 0;
+        const EssayPayment = parseFloat(document.getElementById('EssayPayment').value.replace('Rs. ', '')) || 0;
+        const MCQpayment = parseFloat(document.getElementById('MCQpayment').value.replace('Rs. ', '')) || 0;
+        const TypingPayment = parseFloat(document.getElementById('TypingPayment').value.replace('Rs. ', '')) || 0;
+        const supervisionAmount = 100;
+
+        const isSettingSelected = document.getElementById('Setting').checked;
+        const isModeratingSelected = document.getElementById('Moderating').checked;
+
+        let TotalAmount = 0;
+
+    
+        if (isSettingSelected) {
+            TotalAmount = TypingPayment + supervisionAmount + EssayPayment + MCQpayment; 
+        } else if (isModeratingSelected) {
+            TotalAmount = EssayPayment + MCQpayment; // For Moderating: essay + mcq
+        }
+
         
-        const totalAmount = amount1 + amount2 + amount3;
         
-        document.getElementById('totalAmount').value = totalAmount ? `Rs. ${totalAmount}` : '';
+        
+        document.getElementById('TotalAmount').value = TotalAmount ? `Rs. ${TotalAmount}` : '';
        
     }
 
-    document.getElementById('essayDuration').addEventListener('change', function() {
+    document.getElementById('EssayDuration').addEventListener('change', function() {
         // Get the selected duration value
         const duration = parseInt(this.value);
         
@@ -270,46 +293,49 @@ $user = $_SESSION['user'];
         const ratePerHour = 400;
         
         // Calculate the amount
-        const amount1 = duration * ratePerHour;
+        const EssayPayment = duration * ratePerHour;
         
         // Display the amount in the amount input field
-        document.getElementById('amount1').value = amount1 ? `Rs. ${amount1}` : '';
+        document.getElementById('EssayPayment').value = EssayPayment ? `Rs. ${EssayPayment}` : '';
         updateTotalAmount();
     });
 
     //mcq amount
-    document.getElementById('mcqCount').addEventListener('change', function() {
+    document.getElementById('MCQcount').addEventListener('change', function() {
         
         const count = parseInt(this.value);
         
-        // Define the rate (400 Rs per hour)
+        
         const ratePerQs = 50;
         
         // Calculate the amount
-        const amount2 = count * ratePerQs;
+        const MCQpayment = count * ratePerQs;
         
         // Display the amount in the amount input field
-        document.getElementById('amount2').value = amount2 ? `Rs. ${amount2}` : '';
+        document.getElementById('MCQpayment').value = MCQpayment ? `Rs. ${MCQpayment}` : '';
         updateTotalAmount();
     });
 
     //typing amount
-    document.getElementById('typingPages').addEventListener('change', function() {
+    document.getElementById('PageCount').addEventListener('change', function() {
         
         const pages = parseInt(this.value);
         
-        // Define the rate (400 Rs per hour)
+        
         const ratePerPage = 100;
         
         // Calculate the amount
-        const amount3 = pages * ratePerPage;
+        const TypingPayment = pages * ratePerPage;
         
         // Display the amount in the amount input field
-        document.getElementById('amount3').value = amount3 ? `Rs. ${amount3}` : '';
+        document.getElementById('TypingPayment').value = TypingPayment ? `Rs. ${TypingPayment}` : '';
         updateTotalAmount();
     });
 
+    document.getElementById('Setting').addEventListener('change', updateTotalAmount);
+    document.getElementById('Moderating').addEventListener('change', updateTotalAmount);
 
+    updateTotalAmount();
 
 
 
