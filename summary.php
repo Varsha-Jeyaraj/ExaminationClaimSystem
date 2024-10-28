@@ -9,10 +9,10 @@ if (!isset($_SESSION['user'])) {
 }
 
 // Database connection parameters
-$servername = "localhost";
-$username = "root"; 
-$password = ""; 
-$dbname = "summary"; 
+$servername = "localhost"; //
+$username = "root";  //
+$password = ""; //
+$dbname = "summary";  //
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -26,7 +26,7 @@ if ($conn->connect_error) {
 $sql = "SELECT staff.name, staff.nic, courses.code, courses.amount 
         FROM staff 
         JOIN courses ON staff.id = courses.staff_id";
-$result = $conn->query($sql);
+$result = $conn->query($sql); //
 
 // Prepare data for rendering
 $staff_data = [];
