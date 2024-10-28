@@ -10,9 +10,9 @@ if (!isset($_SESSION['user'])) {
 
 // Database connection parameters
 $servername = "localhost";
-$username = "root"; // Default XAMPP username
-$password = ""; // Default XAMPP password (leave blank)
-$dbname = "summary"; // Database name
+$username = "root"; 
+$password = ""; 
+$dbname = "summary"; 
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -40,7 +40,7 @@ if ($result->num_rows > 0) {
                 'name' => $row['name'],
                 'nic' => $row['nic'],
                 'courses' => [],
-                'total' => 0 // Initialize total to 0 for each staff member
+                'total' => 0 
             ];
         }
 
