@@ -1,5 +1,5 @@
 <?php
-// Start the session
+// Start the session 
 session_start();
 
 // Redirect to login page if the user is not authenticated
@@ -9,10 +9,13 @@ if (!isset($_SESSION['user'])) {
 }
 
 // Database connection parameters
-$servername = "localhost"; //
-$username = "root";  //
-$password = ""; //
-$dbname = "summary";  //
+
+$servername = "localhost";
+$username = "root"; 
+$password = ""; 
+$dbname = "examination_claim_system"; 
+
+
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -23,35 +26,35 @@ if ($conn->connect_error) {
 }
 
 // Query to get staff data and their courses
-$sql = "SELECT staff.name, staff.nic, courses.code, courses.amount 
-        FROM staff 
-        JOIN courses ON staff.id = courses.staff_id";
-$result = $conn->query($sql); //
+
+$sql = "SELECT staffName AS name, courseCode AS code, totalAmount AS amount 
+        FROM form1";
+$result = $conn->query($sql);
+
 
 // Prepare data for rendering
 $staff_data = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $nic = $row['nic'];
+        $name = $row['name'];
 
         // Check if the staff member already exists in $staff_data
-        if (!isset($staff_data[$nic])) {
-            $staff_data[$nic] = [
+        if (!isset($staff_data[$name])) {
+            $staff_data[$name] = [
                 'name' => $row['name'],
-                'nic' => $row['nic'],
                 'courses' => [],
                 'total' => 0 
             ];
         }
 
         // Add the course to the staff member's courses array
-        $staff_data[$nic]['courses'][] = [
+        $staff_data[$name]['courses'][] = [
             'code' => $row['code'],
             'amount' => $row['amount']
         ];
 
         // Add the course amount to the staff member's total
-        $staff_data[$nic]['total'] += $row['amount'];
+        $staff_data[$name]['total'] += $row['amount'];
     }
 } else {
     echo "0 results";
@@ -153,7 +156,6 @@ $conn->close();
             <thead>
                 <tr>
                     <th>Staff Name</th>
-                    <th>NIC No</th>
                     <th>Course Code</th>
                     <th>Amount Per Course (Rs.)</th>
                     <th>Total Amount (Rs.)</th>
@@ -166,9 +168,6 @@ $conn->close();
                             <?php if ($index === 0): ?>
                                 <td rowspan="<?php echo count($staff['courses']); ?>">
                                     <?php echo htmlspecialchars($staff['name']); ?>
-                                </td>
-                                <td rowspan="<?php echo count($staff['courses']); ?>">
-                                    <?php echo htmlspecialchars($staff['nic']); ?>
                                 </td>
                             <?php endif; ?>
                             <td><?php echo htmlspecialchars($course['code']); ?></td>
