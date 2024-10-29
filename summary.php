@@ -9,10 +9,13 @@ if (!isset($_SESSION['user'])) {
 }
 
 // Database connection parameters
+
 $servername = "localhost";
 $username = "root"; 
 $password = ""; 
 $dbname = "examination_claim_system"; 
+
+
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -23,9 +26,11 @@ if ($conn->connect_error) {
 }
 
 // Query to get staff data and their courses
+
 $sql = "SELECT staffName AS name, courseCode AS code, totalAmount AS amount 
         FROM form1";
 $result = $conn->query($sql);
+
 
 // Prepare data for rendering
 $staff_data = [];
