@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Execute the statement
     if ($stmt->execute()) {
         echo "Claim submitted successfully!";
+        echo "Submit another form";
     } else {
         echo "Error: " . $stmt->error;
     }
@@ -47,3 +48,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 ?>
+<br>
+<a href="Form_1.php" class="btn btn-custom">Fill Form 1</a>
