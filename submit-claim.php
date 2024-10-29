@@ -14,18 +14,18 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data with checks for undefined keys
-    $staffName = isset($_POST['staffName']) ? $_POST['staffName'] : '';
-    $courseCode = isset($_POST['courseCode']) ? $_POST['courseCode'] : '';
-    $examType = isset($_POST['examType']) ? $_POST['examType'] : '';
-    $preparationType = isset($_POST['preparationType']) ? $_POST['preparationType'] : '';
-    $essayDuration = isset($_POST['essayDuration']) ? (double)$_POST['essayDuration'] : 0.0;
-    $essayAmount = isset($_POST['essayAmount']) ? (double)str_replace('Rs. ', '', $_POST['essayAmount']) : 0.0;
-    $mcqCount = isset($_POST['mcqCount']) ? (int)$_POST['mcqCount'] : 0;
-    $mcqAmount = isset($_POST['mcqAmount']) ? (double)str_replace('Rs. ', '', $_POST['mcqAmount']) : 0.0;
-    $pageCount = isset($_POST['pageCount']) ? (int)$_POST['pageCount'] : 0;
-    $typingAmount = isset($_POST['typingAmount']) ? (double)str_replace('Rs. ', '', $_POST['typingAmount']) : 0.0;
-    $totalAmount = isset($_POST['totalAmount']) ? (double)str_replace('Rs. ', '', $_POST['totalAmount']) : 0.0;
+     // Retrieve form data with checks for undefined keys
+    $staffName = isset($_POST['StaffName']) ? $_POST['StaffName'] : '';
+    $courseCode = isset($_POST['CourseCode']) ? $_POST['CourseCode'] : '';
+    $examType = isset($_POST['ExamType']) ? $_POST['ExamType'] : '';
+    $preparationType = isset($_POST['PreparationType']) ? $_POST['PreparationType'] : '';
+    $essayDuration = isset($_POST['EssayDuration']) ? (double)$_POST['EssayDuration'] : 0.0;
+    $essayAmount = isset($_POST['EssayPayment']) ? (double)str_replace('Rs. ', '', $_POST['EssayPayment']) : 0.0;
+    $mcqCount = isset($_POST['MCQcount']) ? (int)$_POST['MCQcount'] : 0;
+    $mcqAmount = isset($_POST['MCQpayment']) ? (double)str_replace('Rs. ', '', $_POST['MCQpayment']) : 0.0;
+    $pageCount = isset($_POST['PageCount']) ? (int)$_POST['PageCount'] : 0;
+    $typingAmount = isset($_POST['TypingPayment']) ? (double)str_replace('Rs. ', '', $_POST['TypingPayment']) : 0.0;
+    $totalAmount = isset($_POST['TotalAmount']) ? (double)str_replace('Rs. ', '', $_POST['TotalAmount']) : 0.0;
 
     if (empty($staffName) || empty($courseCode)) {
         die("Staff Name and Course Code are required fields.");
