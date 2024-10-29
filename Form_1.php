@@ -59,7 +59,7 @@ $user = $_SESSION['user'];
                 <ul class="navbar-nav me-auto mb-5 mb-lg-0">
                      <!-- nav Dashboard -->
                      <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">Home</a>
+                        <a class="nav-link" href="dashboardMA.php">Home</a>
                     </li>
                     <!-- Fill Form Dropdown -->
                     <li class="nav-item dropdown">
@@ -152,13 +152,13 @@ $user = $_SESSION['user'];
             <fieldset class="mb-3">
                 <legend class="col-form-label pt-0">Exam Type:</legend>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="examType" id="theory" value="Theory" required>
+                    <input class="form-check-input" type="radio" name="examType" id="theory" value="Theory" required>
                     <label class="form-check-label" for="theory">
                         Theory
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="examType" id="practical" value="Practical" required>
+                    <input class="form-check-input" type="radio" name="examType" id="practical" value="Practical" required>
                     <label class="form-check-label" for="practical">
                         Practical
                     </label>
@@ -169,13 +169,13 @@ $user = $_SESSION['user'];
             <fieldset class="mb-3">
                 <legend class="col-form-label pt-0">Setting or Moderating:</legend>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="preparationType" id="Setting" value="Setting" required>
+                    <input class="form-check-input" type="radio" name="preparationType" id="Setting" value="Setting" required>
                     <label class="form-check-label" for="Setting">
                         Setting
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="preparationType" id="Moderating" value="Moderating" required>
+                    <input class="form-check-input" type="radio" name="preparationType" id="Moderating" value="Moderating" required>
                     <label class="form-check-label" for="Moderating">
                         Moderating
                     </label>
