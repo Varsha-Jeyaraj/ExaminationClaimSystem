@@ -1,6 +1,5 @@
 <?php
-// Start the session
-session_start();
+session_start(); // Start the session
 
 // Redirect to login page if the user is not authenticated
 if (!isset($_SESSION['user'])) {
@@ -12,8 +11,6 @@ if (!isset($_SESSION['user'])) {
 $user = $_SESSION['user'];
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,66 +18,13 @@ $user = $_SESSION['user'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 70px;
-            background-color: #f8f9fa;
-        }
-        .header {
-            background-color: #007bff;
-            color: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .content {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .staff-details {
-            background-color: #e9ecef;
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-    </style>
+
+    <!-- Custom Styles -->
+    <link href="styles.css" rel="stylesheet">
+
 </head>
 <body>
-    <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Examination Claim System</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" 
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav me-auto mb-5 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="dashboardMA.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="payment.php">Payment Details</a></li>
-                    <li class="nav-item"><a class="nav-link" href="summary.php">Summary</a></li>
-                    <li class="nav-item"><a class="nav-link" href="approved.php">Approved</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Registerform.php">Add User</a></li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo htmlspecialchars($user['usertype']." : ".$user['name']); ?>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                            <li><a class="dropdown-item" href="settings.php">Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
     <!-- Main Content Area -->
     <div class="container form-container">
@@ -90,10 +34,22 @@ $user = $_SESSION['user'];
         </div>
         <br><br>
 
+        
+        <!-- Display Alert Messages -->
+        <?php if (isset($_SESSION['success'])): ?>
+            <script>
+                alert("<?php echo htmlspecialchars($_SESSION['success']); ?>");
+            </script>
+            <?php unset($_SESSION['success']); ?>
+        <?php elseif (isset($_SESSION['error'])): ?>
+            <script>
+                alert("<?php echo htmlspecialchars($_SESSION['error']); ?>");
+            </script>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
 
-    <div class="container form-container">
-        <form action="submit-claim.php" method="post">           
-            <!-- Staff Name -->
+        <form action="submit-claim.php" method="post">
+            <!-- Form Fields (Same as you already have) -->
             <div class="mb-3">
                 <label for="StaffName" class="form-label">Staff Name:</label>
                 <select id="StaffName" name="StaffName" class="form-select" required>
@@ -113,7 +69,7 @@ $user = $_SESSION['user'];
                     <option>Ms. M. Mayuravaani</option>
                 </select>
             </div>
-            
+
             
             
             <!-- Year and Semester -->
@@ -229,7 +185,6 @@ $user = $_SESSION['user'];
             </div>
 
 
-
             
 
 <!-- JavaScript to calculate amount -->
@@ -294,11 +249,11 @@ $user = $_SESSION['user'];
 
 
     </form>
+
     </div>
 
-    <!-- Bootstrap JS Bundle (Includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
-
