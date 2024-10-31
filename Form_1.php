@@ -20,75 +20,51 @@ $user = $_SESSION['user'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <!-- Bootstrap CSS -->
+    <title>Payment Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom Styles -->
     <style>
         body {
-            /* Prevent content from being hidden behind the fixed navbar */
             padding-top: 70px;
             background-color: #f8f9fa;
         }
         .header {
-            background-color: #007bff; /* Bootstrap primary color */
+            background-color: #007bff;
             color: #fff;
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 20px;
-            margin-left: -20px;
-            margin-right: -20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        /* Optional: Custom styles for quick actions card */
-        .card {
-            margin-top: 20px;
+        .content {
+            max-width: 1000px;
+            margin: 0 auto;
         }
-        
+        .staff-details {
+            background-color: #e9ecef;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <!-- Brand -->
             <a class="navbar-brand" href="#">Examination Claim System</a>
-            <!-- Toggler/collapsible Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" 
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav me-auto mb-5 mb-lg-0">
-                     <!-- nav Dashboard -->
-                     <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">Home</a>
-                    </li>
-                    <!-- Fill Form Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="fillFormDropdown" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Fill Form
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="fillFormDropdown">
-                            
-                            <li><a class="dropdown-item" href="Form_2.php">For Evaluation</a></li>
-                            <li><a class="dropdown-item" href="Form_3.php">Form 3</a></li>
-                        </ul>
-                    </li>
-                    <!-- Other Navigation Links -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="payment.php">View Payment Details</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="summary.php">View Summary</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="approved.php">Check Approved Sheet</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="dashboardMA.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="payment.php">Payment Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="summary.php">Summary</a></li>
+                    <li class="nav-item"><a class="nav-link" href="approved.php">Approved</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Registerform.php">Add User</a></li>
                 </ul>
-                <!-- User Dropdown -->
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
@@ -96,7 +72,6 @@ $user = $_SESSION['user'];
                             <?php echo htmlspecialchars($user['usertype']." : ".$user['name']); ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <!-- Optional: Add Profile and Settings links if available -->
                             <li><a class="dropdown-item" href="profile.php">Profile</a></li>
                             <li><a class="dropdown-item" href="settings.php">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
@@ -168,7 +143,7 @@ $user = $_SESSION['user'];
                     </label>
                 </div>
             </fieldset>
-            
+
             <!-- Setting or Moderating -->
             <fieldset class="mb-3">
                 <legend class="col-form-label pt-0">Setting or Moderating:</legend>
@@ -199,7 +174,7 @@ $user = $_SESSION['user'];
             
             <!-- Amount for essay-->
             <div class="mb-3">
-            <label for="EssayPayment" class="form-label">Amount (Rs. 400 per hour):</label>
+            <label for="EssayPayment" class="form-label">Essay Amount :</label>
             <input type="text" id="EssayPayment" name="EssayPayment" class="form-control" readonly>
             </div>
 
@@ -210,7 +185,7 @@ $user = $_SESSION['user'];
             </div>
 
             <div class="mb-3">
-            <label for="MCQpayment" class="form-label">Amount (Rs. 50 per question):</label>
+            <label for="MCQpayment" class="form-label"> MCQ Amount :</label>
             <input type="text" id="MCQpayment" name="MCQpayment" class="form-control" readonly>
             </div>
             
@@ -228,13 +203,13 @@ $user = $_SESSION['user'];
             </div>
 
             <div class="mb-3">
-            <label for="TypingPayment" class="form-label">Amount :</label>
+            <label for="TypingPayment" class="form-label">Typing Amount :</label>
             <input type="text" id="TypingPayment" name="TypingPayment" class="form-control" readonly>
             </div>
             <!-- Packeting Supervision -->
             <div class="mb-3">
-            <label for="supervisionAmount" class="form-label">Packeting Supervision :</label>
-            <input type="text" id="supervisionAmount" name="supervisionAmount" class="form-control" value="Rs. 100" readonly>
+                <label for="supervisionAmount" class="form-label">Packeting Supervision:</label>
+                <input type="text" id="supervisionAmount" name="supervisionAmount" class="form-control" value="Rs. 0" readonly>
             </div>
 
 
@@ -259,88 +234,66 @@ $user = $_SESSION['user'];
             
 
 <!-- JavaScript to calculate amount -->
-    <script>
-
+<script>
     function updateTotalAmount() {
         const EssayPayment = parseFloat(document.getElementById('EssayPayment').value.replace('Rs. ', '')) || 0;
         const MCQpayment = parseFloat(document.getElementById('MCQpayment').value.replace('Rs. ', '')) || 0;
-        const TypingPayment = parseFloat(document.getElementById('TypingPayment').value.replace('Rs. ', '')) || 0;
-        const supervisionAmount = 100;
-
+        
         const isSettingSelected = document.getElementById('Setting').checked;
         const isModeratingSelected = document.getElementById('Moderating').checked;
 
-        let TotalAmount = 0;
+        // Set supervisionAmount and TypingPayment based on preparation type selection
+        const supervisionAmount = isSettingSelected ? 100 : 0;
+        const TypingPayment = isSettingSelected ? parseFloat(document.getElementById('TypingPayment').value.replace('Rs. ', '')) || 0 : 0;
 
-    
-        if (isSettingSelected) {
-            TotalAmount = TypingPayment + supervisionAmount + EssayPayment + MCQpayment; 
-        } else if (isModeratingSelected) {
-            TotalAmount = EssayPayment + MCQpayment; // For Moderating: essay + mcq
+        // Update TypingPayment field to reflect zero for moderating
+        if (isModeratingSelected) {
+            document.getElementById('TypingPayment').value = "Rs. 0";
         }
 
-        
-        
-        
-        document.getElementById('TotalAmount').value = TotalAmount ? `Rs. ${TotalAmount}` : '';
-       
+        // Calculate total amount based on preparation type
+        let TotalAmount = EssayPayment + MCQpayment + supervisionAmount;
+        if (isSettingSelected) {
+            TotalAmount += TypingPayment;
+        }
+
+        // Display calculated total amount and supervision amount
+        document.getElementById('TotalAmount').value = `Rs. ${TotalAmount}`;
+        document.getElementById('supervisionAmount').value = `Rs. ${supervisionAmount}`;
     }
 
+    
+    document.getElementById('Setting').addEventListener('change', updateTotalAmount);
+    document.getElementById('Moderating').addEventListener('change', updateTotalAmount);
+
     document.getElementById('EssayDuration').addEventListener('change', function() {
-        // Get the selected duration value
         const duration = parseInt(this.value);
-        
-        // Define the rate (400 Rs per hour)
         const ratePerHour = 400;
-        
-        // Calculate the amount
         const EssayPayment = duration * ratePerHour;
-        
-        // Display the amount in the amount input field
         document.getElementById('EssayPayment').value = EssayPayment ? `Rs. ${EssayPayment}` : '';
         updateTotalAmount();
     });
 
-    //mcq amount
     document.getElementById('MCQcount').addEventListener('change', function() {
-        
         const count = parseInt(this.value);
-        
-        
         const ratePerQs = 50;
-        
-        // Calculate the amount
         const MCQpayment = count * ratePerQs;
-        
-        // Display the amount in the amount input field
         document.getElementById('MCQpayment').value = MCQpayment ? `Rs. ${MCQpayment}` : '';
         updateTotalAmount();
     });
 
-    //typing amount
     document.getElementById('PageCount').addEventListener('change', function() {
-        
         const pages = parseInt(this.value);
-        
-        
         const ratePerPage = 100;
-        
-        // Calculate the amount
         const TypingPayment = pages * ratePerPage;
-        
-        // Display the amount in the amount input field
         document.getElementById('TypingPayment').value = TypingPayment ? `Rs. ${TypingPayment}` : '';
         updateTotalAmount();
     });
 
-    document.getElementById('Setting').addEventListener('change', updateTotalAmount);
-    document.getElementById('Moderating').addEventListener('change', updateTotalAmount);
-
     updateTotalAmount();
+</script>
 
 
-
-    </script>
     </form>
     </div>
 
