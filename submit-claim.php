@@ -14,7 +14,6 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data with checks for undefined keys
     $staffName = isset($_POST['StaffName']) ? $_POST['StaffName'] : '';
     $courseCode = isset($_POST['CourseCode']) ? $_POST['CourseCode'] : '';
     $examType = isset($_POST['ExamType']) ? $_POST['ExamType'] : '';
@@ -50,3 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 ?>
+
+<br>
+<a href="Form_1.php" class="btn btn-custom">Fill Form 1</a>
+

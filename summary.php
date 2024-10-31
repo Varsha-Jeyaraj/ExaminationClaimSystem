@@ -1,5 +1,4 @@
 <?php
-// Start the session
 session_start();
 
 // Redirect to login page if the user is not authenticated
@@ -8,47 +7,102 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-// Retrieve user information from the session
-$user = $_SESSION['user'];
+// Database connection parameters
+
+$servername = "localhost";
+$username = "root"; 
+$password = ""; 
+$dbname = "examination_claim_system"; 
+
+
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Query to get staff data and their courses
+
+$sql = "SELECT staffName AS name, courseCode AS code, totalAmount AS amount 
+        FROM form1";
+$result = $conn->query($sql);
+
+
+// Prepare data for rendering
+$staff_data = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $name = $row['name'];
+
+        // Check if the staff member already exists in $staff_data
+        if (!isset($staff_data[$name])) {
+            $staff_data[$name] = [
+                'name' => $row['name'],
+                'courses' => [],
+                'total' => 0 
+            ];
+        }
+
+        // Add the course to the staff member's courses array
+        $staff_data[$name]['courses'][] = [
+            'code' => $row['code'],
+            'amount' => $row['amount']
+        ];
+
+        // Add the course amount to the staff member's total
+        $staff_data[$name]['total'] += $row['amount'];
+    }
+} else {
+    echo "0 results";
+}
+
+// Close connection
+$conn->close();
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+
+    <title>Summary Page</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom Styles -->
+    <!-- Custom CSS -->
     <style>
-          body {
-            background-image: url('https://wallpaper-house.com/data/out/9/wallpaper2you_339572.jpg');
-            background-size: cover; 
-            background-repeat: no-repeat; 
+        body {
             padding-top: 70px;
-            background-color: #f8f9fa;
+            background-image: url('https://wallpaper-house.com/data/out/9/wallpaper2you_339572.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
             color: #fff;
         }
         .header {
-            background-color: #007bff; /* Bootstrap primary color */
+            background-color: #007bff;
+
             color: #fff;
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 20px;
-            margin-left: -20px;
-            margin-right: -20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
-        /* Optional: Custom styles for quick actions card */
-        .card {
+        .table {
             margin-top: 20px;
+            border: 2px solid rgba(0, 123, 255, 0.1);
         }
-        .content{
-            max-width: 1000px; /* Set max-width to 600px */
-            margin: 0 auto;
+        .table th {
+            background-color: #F8F9F9;
+            color: #333333;
         }
-        
-        
+        .table td {
+            background-color: rgba(237, 246, 249, 0.4);
+            color: #333333;
+        }
+
     </style>
 </head>
 <body>
@@ -65,7 +119,7 @@ $user = $_SESSION['user'];
                     <li class="nav-item">
                         <a class="nav-link" href="dashboard.php">Home</a>
                     </li>
-                
+
                     <li class="nav-item">
                         <a class="nav-link" href="payment.php">Payment Details</a>
                     </li>
@@ -97,40 +151,46 @@ $user = $_SESSION['user'];
         </div>
     </nav>
 
-<div class="content">
-    <div class="header">
-        <h2>Claim Summary</h2>
-    </div>
-    
-    <p><!-- Display summary of claims here --></p>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Claim ID</th>
-                <th scope="col">Staff Name</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Example summary data -->
-            <tr>
-                <td>001</td>
-                <td>John Doe</td>
-                <td>$500</td>
-                <td>Approved</td>
-            </tr>
-            <tr>
-                <td>002</td>
-                <td>Jane Smith</td>
-                <td>$300</td>
-                <td>Pending</td>
-            </tr>
-            <!-- Additional rows can be added here -->
-        </tbody>
-    </table>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Main Content Area -->
+    <div class="container form-container">
+        <div class="header">
+            <h1 class="form-title mb-1">Summary of Examination Claim</h1>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Staff Name</th>
+                    <th>Course Code</th>
+                    <th>Amount Per Course (Rs.)</th>
+                    <th>Total Amount (Rs.)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($staff_data as $staff): ?>
+                    <?php foreach ($staff['courses'] as $index => $course): ?>
+                        <tr>
+                            <?php if ($index === 0): ?>
+                                <td rowspan="<?php echo count($staff['courses']); ?>">
+                                    <?php echo htmlspecialchars($staff['name']); ?>
+                                </td>
+                            <?php endif; ?>
+                            <td><?php echo htmlspecialchars($course['code']); ?></td>
+                            <td>Rs. <?php echo htmlspecialchars($course['amount']); ?></td>
+                            <?php if ($index === 0): ?>
+                                <td rowspan="<?php echo count($staff['courses']); ?>">
+                                    Rs. <?php echo htmlspecialchars($staff['total']); ?>
+                                </td>
+                            <?php endif; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

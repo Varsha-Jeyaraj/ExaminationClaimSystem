@@ -32,14 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Redirect based on usertype
             if ($user['usertype'] == "Management Assistant") {
-                header('Location: dashboard.php');
+                header('Location: dashboardMA.php');
                 exit; // Stop script execution after redirection
             }
-            if ($user['usertype'] == "DCS Staff") {
-                header('Location: dashboardDCSStaff.php');
+            if ($user['usertype'] == "Staff") {
+                header('Location: staffView.php');
                 exit;
             }
-            if ($user['usertype'] == "DCS Head") {
+            if ($user['usertype'] == "Head") {
                 header('Location: dashboardDCSHead.php');
                 exit;
             }
@@ -57,3 +57,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
