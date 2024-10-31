@@ -16,16 +16,15 @@ $user = $_SESSION['user'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <!-- Bootstrap CSS -->
+    <title>Payment Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom Styles -->
     <link href="styles.css" rel="stylesheet">
 
 </head>
 <body>
     <?php include 'navbar.php'; ?>
-
 
     <!-- Main Content Area -->
     <div class="container form-container">
@@ -99,7 +98,7 @@ $user = $_SESSION['user'];
                     </label>
                 </div>
             </fieldset>
-            
+
             <!-- Setting or Moderating -->
             <fieldset class="mb-3">
                 <legend class="col-form-label pt-0">Setting or Moderating:</legend>
@@ -130,7 +129,7 @@ $user = $_SESSION['user'];
             
             <!-- Amount for essay-->
             <div class="mb-3">
-            <label for="EssayPayment" class="form-label">Amount (Rs. 400 per hour):</label>
+            <label for="EssayPayment" class="form-label">Essay Amount :</label>
             <input type="text" id="EssayPayment" name="EssayPayment" class="form-control" readonly>
             </div>
 
@@ -141,7 +140,7 @@ $user = $_SESSION['user'];
             </div>
 
             <div class="mb-3">
-            <label for="MCQpayment" class="form-label">Amount (Rs. 50 per question):</label>
+            <label for="MCQpayment" class="form-label"> MCQ Amount :</label>
             <input type="text" id="MCQpayment" name="MCQpayment" class="form-control" readonly>
             </div>
             
@@ -159,13 +158,13 @@ $user = $_SESSION['user'];
             </div>
 
             <div class="mb-3">
-            <label for="TypingPayment" class="form-label">Amount :</label>
+            <label for="TypingPayment" class="form-label">Typing Amount :</label>
             <input type="text" id="TypingPayment" name="TypingPayment" class="form-control" readonly>
             </div>
             <!-- Packeting Supervision -->
             <div class="mb-3">
-            <label for="supervisionAmount" class="form-label">Packeting Supervision :</label>
-            <input type="text" id="supervisionAmount" name="supervisionAmount" class="form-control" value="Rs. 100" readonly>
+                <label for="supervisionAmount" class="form-label">Packeting Supervision:</label>
+                <input type="text" id="supervisionAmount" name="supervisionAmount" class="form-control" value="Rs. 0" readonly>
             </div>
 
 
@@ -185,7 +184,72 @@ $user = $_SESSION['user'];
                 </div>
             </div>
 
-        </form>
+
+            
+
+<!-- JavaScript to calculate amount -->
+<script>
+    function updateTotalAmount() {
+        const EssayPayment = parseFloat(document.getElementById('EssayPayment').value.replace('Rs. ', '')) || 0;
+        const MCQpayment = parseFloat(document.getElementById('MCQpayment').value.replace('Rs. ', '')) || 0;
+        
+        const isSettingSelected = document.getElementById('Setting').checked;
+        const isModeratingSelected = document.getElementById('Moderating').checked;
+
+        // Set supervisionAmount and TypingPayment based on preparation type selection
+        const supervisionAmount = isSettingSelected ? 100 : 0;
+        const TypingPayment = isSettingSelected ? parseFloat(document.getElementById('TypingPayment').value.replace('Rs. ', '')) || 0 : 0;
+
+        // Update TypingPayment field to reflect zero for moderating
+        if (isModeratingSelected) {
+            document.getElementById('TypingPayment').value = "Rs. 0";
+        }
+
+        // Calculate total amount based on preparation type
+        let TotalAmount = EssayPayment + MCQpayment + supervisionAmount;
+        if (isSettingSelected) {
+            TotalAmount += TypingPayment;
+        }
+
+        // Display calculated total amount and supervision amount
+        document.getElementById('TotalAmount').value = `Rs. ${TotalAmount}`;
+        document.getElementById('supervisionAmount').value = `Rs. ${supervisionAmount}`;
+    }
+
+    
+    document.getElementById('Setting').addEventListener('change', updateTotalAmount);
+    document.getElementById('Moderating').addEventListener('change', updateTotalAmount);
+
+    document.getElementById('EssayDuration').addEventListener('change', function() {
+        const duration = parseInt(this.value);
+        const ratePerHour = 400;
+        const EssayPayment = duration * ratePerHour;
+        document.getElementById('EssayPayment').value = EssayPayment ? `Rs. ${EssayPayment}` : '';
+        updateTotalAmount();
+    });
+
+    document.getElementById('MCQcount').addEventListener('change', function() {
+        const count = parseInt(this.value);
+        const ratePerQs = 50;
+        const MCQpayment = count * ratePerQs;
+        document.getElementById('MCQpayment').value = MCQpayment ? `Rs. ${MCQpayment}` : '';
+        updateTotalAmount();
+    });
+
+    document.getElementById('PageCount').addEventListener('change', function() {
+        const pages = parseInt(this.value);
+        const ratePerPage = 100;
+        const TypingPayment = pages * ratePerPage;
+        document.getElementById('TypingPayment').value = TypingPayment ? `Rs. ${TypingPayment}` : '';
+        updateTotalAmount();
+    });
+
+    updateTotalAmount();
+</script>
+
+
+    </form>
+
     </div>
 
     <!-- Bootstrap JS and dependencies -->
