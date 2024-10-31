@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Start the session
 session_start();
 
@@ -33,6 +33,20 @@ $user = $_SESSION['user'];
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
     </style>
+    <script>
+        // Display an alert if there's an error or success message in the URL
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorMessage = urlParams.get('error');
+            const successMessage = urlParams.get('success');
+
+            if (errorMessage) {
+                alert(errorMessage);
+            } else if (successMessage) {
+                alert(successMessage);
+            }
+        };
+    </script>
 </head>
 <body>
      <!-- Top Navigation Bar -->
@@ -48,7 +62,6 @@ $user = $_SESSION['user'];
                     <li class="nav-item">
                         <a class="nav-link" href="dashboard.php">Home</a>
                     </li>
-                
                     <li class="nav-item">
                         <a class="nav-link" href="payment.php">Payment Details</a>
                     </li>
@@ -86,7 +99,7 @@ $user = $_SESSION['user'];
                 <input type="text" name="Name" class="form-control" placeholder="Name" required>
             </div>
             <div class="mb-3">
-                <input type="text" name="nic" class="form-control" placeholder="Nic NO" required>
+                <input type="text" name="nic" class="form-control" placeholder="NIC No" required>
             </div>
             <div class="mb-3">
                 <input type="text" name="designation" class="form-control" placeholder="Designation" required>
