@@ -88,7 +88,16 @@ if (isset($_SESSION['error_message'])) {
         <img src="University Logo.png" alt="University">
 
         <form action="login.php" method="POST">
-            
+
+
+
+        <?php if (!empty($error_message)): ?>
+            <div class="alert alert-danger">
+            <?php echo htmlspecialchars($error_message); ?>
+            </div>
+        <?php endif; ?>
+
+ 
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
@@ -110,8 +119,3 @@ if (isset($_SESSION['error_message'])) {
 </body>
 </html>
 
-<?php if (!empty($error_message)): ?>
-    <div class="alert alert-danger">
-        <?php echo htmlspecialchars($error_message); ?>
-    </div>
-<?php endif; ?>

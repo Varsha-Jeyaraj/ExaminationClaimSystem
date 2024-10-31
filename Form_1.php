@@ -1,4 +1,3 @@
-
 <?php
 // Start the session
 session_start();
@@ -349,3 +348,4 @@ $user = $_SESSION['user'];
 
 </body>
 </html>
+

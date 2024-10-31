@@ -1,5 +1,4 @@
 <?php
-// Start the session 
 session_start();
 
 // Redirect to login page if the user is not authenticated
@@ -64,11 +63,13 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Summary Page</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -83,6 +84,7 @@ $conn->close();
         }
         .header {
             background-color: #007bff;
+
             color: #fff;
             padding: 15px;
             border-radius: 5px;
@@ -100,6 +102,7 @@ $conn->close();
             background-color: rgba(237, 246, 249, 0.4);
             color: #333333;
         }
+
     </style>
 </head>
 <body>
@@ -116,6 +119,7 @@ $conn->close();
                     <li class="nav-item">
                         <a class="nav-link" href="dashboard.php">Home</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="payment.php">Payment Details</a>
                     </li>
@@ -133,6 +137,7 @@ $conn->close();
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <?php echo htmlspecialchars($user['usertype']." : ".$user['name']); ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="profile.php">Profile</a></li>
@@ -145,6 +150,7 @@ $conn->close();
             </div>
         </div>
     </nav>
+
 
     <!-- Main Content Area -->
     <div class="container form-container">
