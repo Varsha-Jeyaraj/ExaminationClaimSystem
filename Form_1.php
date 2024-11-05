@@ -1,5 +1,8 @@
 
 <?php
+
+include 'config.php';
+
 // Start the session
 session_start();
 
@@ -11,6 +14,32 @@ if (!isset($_SESSION['user'])) {
 
 // Retrieve user information from the session
 $user = $_SESSION['user'];
+
+$sql = "SELECT type, ratePerHour, ratePerQs, ratePerPage, supervisionAmount FROM payrates";
+$result = $conn->query($sql);
+
+// Check if records were found and store them in variables
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        if ($row["type"] === "setting") {
+            $ratePerHour_setting = $row["ratePerHour"];
+            $ratePerQs_setting = $row["ratePerQs"];
+            $ratePerPage_setting = $row["ratePerPage"];
+            $supervisionAmount_setting = $row["supervisionAmount"];
+        } elseif ($row["type"] === "moderating") {
+            $ratePerHour_moderating = $row["ratePerHour"];
+            $ratePerQs_moderating = $row["ratePerQs"];
+            $ratePerPage_moderating = $row["ratePerPage"];
+            $supervisionAmount_moderating = $row["supervisionAmount"];
+        }
+    }
+} else {
+    echo "No records found";
+}
+
+// Close the connection
+$conn->close();
+
 ?>
 
 
@@ -84,7 +113,7 @@ $user = $_SESSION['user'];
     </nav>
 
     <!-- Main Content Area -->
-    <div class="container form-container">
+    <div class="container form-container" id= "formContainer">
         <div class="header">
             <h1 class="form-title mb-1">Examination Claim Form I</h1>
             <h3 class="form-title mb-1">Preparation of Question Paper</h3>
@@ -92,7 +121,7 @@ $user = $_SESSION['user'];
         <br><br>
 
 
-    <div class="container form-container">
+    <div class="container form-container" >
         <form action="submit-claim.php" method="post">           
             <!-- Staff Name -->
             <div class="mb-3">
@@ -209,7 +238,7 @@ $user = $_SESSION['user'];
             <!-- Packeting Supervision -->
             <div class="mb-3">
                 <label for="supervisionAmount" class="form-label">Packeting Supervision:</label>
-                <input type="text" id="supervisionAmount" name="supervisionAmount" class="form-control" value="Rs. 0" readonly>
+                <input type="text" id="supervisionAmount" name="supervisionAmount" class="form-control" readonly>
             </div>
 
 
@@ -225,73 +254,127 @@ $user = $_SESSION['user'];
             <div class="row">
             <div class="col-md-12 mb-3">
                 <button type="submit" class="btn btn-primary me-2 submit-btn">Submit</button>
-                <button type="reset" class="btn btn-secondary btn-danger reset-btn">Reset</button>
+                <button type="reset" class="btn btn-secondary btn-danger reset-btn" onclick="scrollToTop()">Reset</button>
                 </div>
             </div>
 
+            <script>
+            // Rates from PHP variables
+            const ratePerHourSetting = <?php echo json_encode($ratePerHour_setting); ?>;
+            const ratePerHourModerating = <?php echo json_encode($ratePerHour_moderating); ?>;
+            const ratePerQsSetting = <?php echo json_encode($ratePerQs_setting); ?>;
+            const ratePerQsModerating = <?php echo json_encode($ratePerQs_moderating); ?>;
+            const ratePerPageSetting = <?php echo json_encode($ratePerPage_setting); ?>;
+            const ratePerPageModerating = <?php echo json_encode($ratePerPage_moderating); ?>;
+            const supervisionAmountSetting = <?php echo json_encode($supervisionAmount_setting); ?>;
+            const supervisionAmountModerating = <?php echo json_encode($supervisionAmount_moderating); ?>;
 
+
+            // Elements
+            const preparationType = document.querySelectorAll('input[name="PreparationType"]');
+            const essayDuration = document.getElementById('EssayDuration');
+            const essayPayment = document.getElementById('EssayPayment');
+            const mcqCount = document.getElementById('MCQcount');
+            const mcqPayment = document.getElementById('MCQpayment');
+            const pageCount = document.getElementById('PageCount');
+            const typingPayment = document.getElementById('TypingPayment');
+            const supervisionAmount = document.getElementById('supervisionAmount');
+            const totalAmount = document.getElementById('TotalAmount');
+
+            // Function to calculate Essay Payment
+            function calculateEssayPayment() {
+                let duration = parseInt(essayDuration.value) || 0;
+                let payment = 0;
+
+                preparationType.forEach(type => {
+                    if (type.checked) {
+                        payment = type.value === "Setting" 
+                            ? duration * ratePerHourSetting 
+                            : duration * ratePerHourModerating;
+                    }
+                });
+
+                essayPayment.value = `Rs. ${payment.toFixed(2)}`;
+                calculateTotal();
+            }
+
+            // Function to calculate MCQ Payment
+            function calculateMCQPayment() {
+                let count = parseInt(mcqCount.value) || 0;
+                let payment = 0;
+
+                preparationType.forEach(type => {
+                    if (type.checked) {
+                        payment = type.value === "Setting" 
+                            ? count * ratePerQsSetting 
+                            : count * ratePerQsModerating;
+                    }
+                });
+
+                mcqPayment.value = `Rs. ${payment.toFixed(2)}`;
+                calculateTotal();
+            }
+
+            // Function to calculate Typing Payment
+            function calculateTypingPayment() {
+                let pages = parseInt(pageCount.value) || 0;
+                let payment = 0;
+
+                preparationType.forEach(type => {
+                    if (type.checked) {
+                        payment = type.value === "Setting" 
+                            ? pages * ratePerPageSetting 
+                            : pages * ratePerPageModerating;
+                    }
+                })
+
+                typingPayment.value = `Rs. ${payment.toFixed(2)}`;
+                calculateTotal();
+            }
+
+
+            // Function to calculate Packeting Supervision amount
+            function calculateSupervisionPayment() {
+                
+                let payment = 0;
+
+                preparationType.forEach(type => {
+                    if (type.checked) {
+                        payment = type.value === "Setting" 
+                            ? 1*supervisionAmountSetting 
+                            : 1*supervisionAmountModerating;
+                    }
+                })
+
+                supervisionAmount.value = `Rs. ${payment.toFixed(2)}`;
+                calculateTotal();
+            }
+
+            // Function to calculate Total Amount
+            function calculateTotal() {
+                let essay = parseFloat(essayPayment.value.replace('Rs. ', '')) || 0;
+                let mcq = parseFloat(mcqPayment.value.replace('Rs. ', '')) || 0;
+                let typing = parseFloat(typingPayment.value.replace('Rs. ', '')) || 0;
+                let supervision = parseFloat(supervisionAmount.value.replace('Rs. ', '')) || 0;
+                totalAmount.value = `Rs. ${(essay + mcq + typing + supervision).toFixed(2)}`;
+            }
+
+            // Event Listeners
+            essayDuration.addEventListener('change', calculateEssayPayment);
+            preparationType.forEach(type => type.addEventListener('change', calculateEssayPayment));
+            mcqCount.addEventListener('input', calculateMCQPayment);
+            pageCount.addEventListener('change', calculateTypingPayment);
+            preparationType.forEach(type => type.addEventListener("change", calculateSupervisionPayment));
 
             
+            //JavaScript to handle scroll to top on reset
+            function scrollToTop() {
+                document.getElementById('formContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
 
-<!-- JavaScript to calculate amount -->
-<script>
-    function updateTotalAmount() {
-        const EssayPayment = parseFloat(document.getElementById('EssayPayment').value.replace('Rs. ', '')) || 0;
-        const MCQpayment = parseFloat(document.getElementById('MCQpayment').value.replace('Rs. ', '')) || 0;
-        
-        const isSettingSelected = document.getElementById('Setting').checked;
-        const isModeratingSelected = document.getElementById('Moderating').checked;
 
-        // Set supervisionAmount and TypingPayment based on preparation type selection
-        const supervisionAmount = isSettingSelected ? 100 : 0;
-        const TypingPayment = isSettingSelected ? parseFloat(document.getElementById('TypingPayment').value.replace('Rs. ', '')) || 0 : 0;
 
-        // Update TypingPayment field to reflect zero for moderating
-        if (isModeratingSelected) {
-            document.getElementById('TypingPayment').value = "Rs. 0";
-        }
-
-        // Calculate total amount based on preparation type
-        let TotalAmount = EssayPayment + MCQpayment + supervisionAmount;
-        if (isSettingSelected) {
-            TotalAmount += TypingPayment;
-        }
-
-        // Display calculated total amount and supervision amount
-        document.getElementById('TotalAmount').value = `Rs. ${TotalAmount}`;
-        document.getElementById('supervisionAmount').value = `Rs. ${supervisionAmount}`;
-    }
-
-    
-    document.getElementById('Setting').addEventListener('change', updateTotalAmount);
-    document.getElementById('Moderating').addEventListener('change', updateTotalAmount);
-
-    document.getElementById('EssayDuration').addEventListener('change', function() {
-        const duration = parseInt(this.value);
-        const ratePerHour = 400;
-        const EssayPayment = duration * ratePerHour;
-        document.getElementById('EssayPayment').value = EssayPayment ? `Rs. ${EssayPayment}` : '';
-        updateTotalAmount();
-    });
-
-    document.getElementById('MCQcount').addEventListener('change', function() {
-        const count = parseInt(this.value);
-        const ratePerQs = 50;
-        const MCQpayment = count * ratePerQs;
-        document.getElementById('MCQpayment').value = MCQpayment ? `Rs. ${MCQpayment}` : '';
-        updateTotalAmount();
-    });
-
-    document.getElementById('PageCount').addEventListener('change', function() {
-        const pages = parseInt(this.value);
-        const ratePerPage = 100;
-        const TypingPayment = pages * ratePerPage;
-        document.getElementById('TypingPayment').value = TypingPayment ? `Rs. ${TypingPayment}` : '';
-        updateTotalAmount();
-    });
-
-    updateTotalAmount();
-</script>
+            </script>
 
 
     </form>
