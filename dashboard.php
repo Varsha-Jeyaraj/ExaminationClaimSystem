@@ -22,106 +22,243 @@ $user = $_SESSION['user'];
     <!-- Custom Styles -->
     <style>
         body {
-            background-image: url('https://wallpaper-house.com/data/out/9/wallpaper2you_339572.jpg');
-            background-size: cover; 
-            background-repeat: no-repeat; 
-            padding-top: 70px;
-            background-color: #f8f9fa;
+            background-color: #0056b3;
+
         }
         .header {
-            background-color: #007bff; /* Bootstrap primary color */
+            background-color: rgba(0, 123, 255, 0.8); /* Semi-transparent primary color */
             color: #fff;
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 20px;
         }
-        /* Optional: Custom styles for quick actions card */
         .card {
-            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* White background for cards */
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #007bff;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border-radius: 20px;
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .text-center{
+
+            
+        }
+
+        /* New add */
+        .carousel-item {
+            height: 80vh;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .carousel-item h1 {
+            font-size: 3rem;
+        }
+        .carousel-item p {
+            font-size: 1.2rem;
+        }
+        .carousel-item .btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+        .about-section {
+            background-color: #e7f8ff;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+    
+        }
+        .about-section h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            color: #343a40;
+            font-size: 2rem;
+        }
+        .about-section h5 {
+            font-family: 'Open Sans', sans-serif;
+            color: #6c757d;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
     </style>
 </head>
 <body>
-    <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <!-- Brand -->
-            <a class="navbar-brand" href="#">Examination Claim System</a>
-            <!-- Toggler/collapsible Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" 
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Navbar Links -->
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav me-auto mb-5 mb-lg-0">
-                    
-                    <!-- nav Dashboard -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">Home</a>
-                    </li>
-                    <!-- Fill Form Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="fillFormDropdown" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Fill Form
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="fillFormDropdown">
-                            <li><a class="dropdown-item" href="Form_1.php">Form 1</a></li>
-                            <li><a class="dropdown-item" href="Form_2.php">Form 2</a></li>
-                            <li><a class="dropdown-item" href="Form_3.php">Form 3</a></li>
-                        </ul>
-                    </li>
-                    <!-- Other Navigation Links -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="payment.php">View Payment Details</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="summary.php">View Summary</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="approved.php">Check Approved Sheet</a>
-                    </li>
-                </ul>
-                <!-- User Dropdown -->
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo htmlspecialchars($user['role']); ?>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <!-- Optional: Add Profile and Settings links if available -->
-                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                            <li><a class="dropdown-item" href="settings.php">Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
+ <!-- Top Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">U O J | D C S</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" 
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">  
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <?php echo htmlspecialchars($user['usertype']." : ".$user['name']); ?>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                        <li><a class="dropdown-item" href="settings.php">Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <!-- New add -->
+   <!-- Hero Section with Carousel -->
+   <div id="heroCarousel" class="carousel slide carousel-fade" data-ride="carousel" data-interval="3400" data-pause="false">
+        <div class="carousel-inner">
+            <!-- Slide 1 -->
+            <div class="carousel-item active" style="background-image: url('DashIMG1.jpg'); display: flex; justify-content:center; align-items:center;">
+                <h4>WELCOME TO</h4>
+                <h1>Examination Claim System</h1>
+                <p>Department of Computer Science at the University of Jaffna.</p>
+               
+            </div>
+            <!-- Slide 2 -->
+            <div class="carousel-item" style="background-image: url('DashIMG2.jpg'); display: flex; justify-content:center; align-items:center;">
+                <h4>WELCOME TO</h4>
+                <h1>Examination Claim System</h1>
+                <p>Department of Computer Science at the University of Jaffna.</p>
+            </div>
+            <!-- Slide 3 -->
+            <div class="carousel-item" style="background-image: url('DashIMG4.jpg'); display: flex; justify-content:center; align-items:center;">
+                <h4>WELCOME TO</h4>
+                <h1>Examination Claim System</h1>
+                <p>Department of Computer Science at the University of Jaffna.</p>
+                
             </div>
         </div>
-    </nav>
+
+    </div>
+
+   <!-- About Area -->
+    <div class="container my-5">
+        <div class="about-section">
+            <h2>About</h2>
+            <h5>
+                We are developing an Examination Claim System for the Department of Computer Science 
+                at the University of Jaffna. This system is intended to streamline the payment process for 
+                Professors and Lecturers (both permanent and visiting) involved in setting, moderating, marking 
+                examination papers and conducting examinations. It also includes the payment for Technical 
+                Officers and Lab attendants who are involved in the examination process.
+            </h5>
+        </div>
+    </div>
+   
 
     <!-- Main Content Area -->
-    <div class="container">
+    <div class="container mt-5">
         <!-- Header Section -->
-        <div class="header">
-            <h1 class="text-center mb-2">Administration Registrar Branch</h1>
+        
+        <!-- Additional Links Card -->
+        <div class="row text-center mt-4">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Payment Details</h5>
+                        <a href="payment.php" class="btn btn-custom">Go to Payment Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Summary</h5>
+                        <a href="summary.php" class="btn btn-custom">View Summary</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Approved</h5>
+                        <a href="approved.php" class="btn btn-custom">View Approved</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Add User</h5>
+                        <a href="Registerform.php" class="btn btn-custom">Add New User</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Form 1-Preparation</h5>
+                        <a href="Form_1.php" class="btn btn-custom">Fill Form</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Form 2-Evaluation</h5>
+                        <a href="Form_2.php" class="btn btn-custom">Fill Form</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Form 3-Conducting</h5>
+                        <a href="Form_3.php" class="btn btn-custom">Fill Form</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- Welcome Message -->
-         <br>
-        <h2 class="text-center mb-2">ABOUT</h2>
-        <p class="text-center">The general administration of the university comes under the purview of the Registrar and the Office of the Registrar functions as the central administration office of the entire university.
-
-The Office of the Registrar is the Liaison Office in the central administration of the university system. It liaises with other Departments/Divisions in the university in organizing various meetings of the standing committees. As for administrative functions, he makes appointments with various individuals/experts from institutes outside the university and performs other routine functions. There are administrative ne Divisions in the General Administration and Service Divisions which come under the direct purview of the Registrar. The University of Jaffna with as many as ten faculties with a Campus in Vavuniya nad a vast complex in Kilinochchi with three faculties system of the planning, development and maintenance of services provided by all these Divisions are extremely complex. These activities are monitored by the Office of the Registrar.
-
-Office of the Registrar co-ordinates with all these Divisions – via communication with relevant Heads of Divisions- by providing various instructions and guidance from time to time to ensure the smooth functioning of the entire university. In addition, it also works in close collaboration with the Office of the Vice-Chancellor as the Registrar functions under the direction and control of the Vice-Chancellor. The directions given by the Vice-Chancellor with regard to general administration are usually channeled through the Registrar. With regard to the implementation of activities on the directions of the Vice Chancellor, the Office of the Registrar liaises with the administrative and service divisions communicating relevant information and directions to them.</p>
-        <!-- Quick Actions Card -->
-
     </div>
 
     <!-- Bootstrap JS Bundle (Includes Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Optional JavaScript for button click
+        document.querySelectorAll('.carousel-item .btn').forEach(button => {
+            button.addEventListener('click', function() {
+                alert('You clicked a button!');
+            });
+        });
+    </script>
 </body>
 </html>
