@@ -9,15 +9,8 @@ if (!isset($_SESSION['user'])) {
 
 // Database connection parameters
 
-$servername = "localhost";
-$username = "root"; 
-$password = ""; 
-$dbname = "examination_claim_system"; 
-
-
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+include 'config.php';
+$user = $_SESSION['user'];
 
 // Check connection
 if ($conn->connect_error) {
