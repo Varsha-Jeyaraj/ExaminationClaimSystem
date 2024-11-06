@@ -1,6 +1,5 @@
 <?php
-// Start the session
-session_start();
+session_start(); // Start the session
 
 // Redirect to login page if the user is not authenticated
 if (!isset($_SESSION['user'])) {
@@ -11,98 +10,21 @@ if (!isset($_SESSION['user'])) {
 // Retrieve user information from the session
 $user = $_SESSION['user'];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <!-- Bootstrap CSS -->
+    <title>Payment Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom Styles -->
-    <style>
-        body {
-            /* Prevent content from being hidden behind the fixed navbar */
-            padding-top: 70px;
-            background-color: #f8f9fa;
-        }
-        .header {
-            background-color: #007bff; /* Bootstrap primary color */
-            color: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            margin-left: -20px;
-            margin-right: -20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-        }
-        /* Optional: Custom styles for quick actions card */
-        .card {
-            margin-top: 20px;
-        }
-        
-    </style>
+    <link href="styles.css" rel="stylesheet">
+
 </head>
 <body>
-    <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <!-- Brand -->
-            <a class="navbar-brand" href="#">Examination Claim System</a>
-            <!-- Toggler/collapsible Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" 
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Navbar Links -->
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav me-auto mb-5 mb-lg-0">
-                     <!-- nav Dashboard -->
-                     <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">Home</a>
-                    </li>
-                    <!-- Fill Form Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="fillFormDropdown" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Fill Form
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="fillFormDropdown">
-                            
-                            <li><a class="dropdown-item" href="Form_2.php">Form 2</a></li>
-                            <li><a class="dropdown-item" href="Form_3.php">Form 3</a></li>
-                        </ul>
-                    </li>
-                    <!-- Other Navigation Links -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="payment.php">View Payment Details</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="summary.php">View Summary</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="approved.php">Check Approved Sheet</a>
-                    </li>
-                </ul>
-                <!-- User Dropdown -->
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo htmlspecialchars($user['role']); ?>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <!-- Optional: Add Profile and Settings links if available -->
-                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                            <li><a class="dropdown-item" href="settings.php">Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
     <!-- Main Content Area -->
     <div class="container form-container">
@@ -112,97 +34,82 @@ $user = $_SESSION['user'];
         </div>
         <br><br>
 
+        
+        <!-- Display Alert Messages -->
+        <?php if (isset($_SESSION['success'])): ?>
+            <script>
+                alert("<?php echo htmlspecialchars($_SESSION['success']); ?>");
+            </script>
+            <?php unset($_SESSION['success']); ?>
+        <?php elseif (isset($_SESSION['error'])): ?>
+            <script>
+                alert("<?php echo htmlspecialchars($_SESSION['error']); ?>");
+            </script>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
 
-    <div class="container form-container">
-        <form action="/submit-claim" method="post">            
-            <!-- Staff Name -->
+        <form action="submit-claim.php" method="post">
+            <!-- Form Fields (Same as you already have) -->
             <div class="mb-3">
-                <label for="staff" class="form-label">Staff Name:</label>
-                <select id="staff" name="staff" class="form-select" required>
+                <label for="StaffName" class="form-label">Staff Name:</label>
+                <select id="StaffName" name="StaffName" class="form-select" required>
                     <option selected disabled value="">Select Staff Name</option>
                     <option>Dr. S. Mahesan</option>
                     <option>Dr. E. Y. A. Charles</option>
                     <option>Dr. K. Thabotharan</option>
                     <option>Prof. A. Ramanan</option>
-                    <option>Dr. (Mrs). B. Mayurathan</option>
+                    <option>Dr. (Mrs.) B. Mayurathan</option>
                     <option>Mr. S. Suthakar</option>
                     <option>Prof. M. Siyamalan</option>
                     <option>Dr. S. Shriparen</option>
-                    <option>Mr. K. Sarveswaran</option>
+                    <option>Dr. K. Sarveswaran</option>
                     <option>Dr. T. Kokul</option>
-                    <option>Ms. J. Samantha Tharani</option>
-                    <option>Ms. R. Nirthika</option>
+                    <option>Dr. (Ms.) J. Samantha Tharani</option>
+                    <option>Dr. (Ms.) R. Nirthika</option>
                     <option>Ms. M. Mayuravaani</option>
                 </select>
             </div>
+
             
-            <!-- NIC Number -->
-            <div class="mb-3">
-                <label for="NIC" class="form-label">NIC Number:</label>
-                <input type="text" id="NIC" name="NIC" class="form-control" placeholder="Enter NIC Number" required>
-            </div>
             
             <!-- Year and Semester -->
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="year" class="form-label">Year:</label>
-                    <input type="number" id="year" name="year" class="form-control" min="2023" placeholder="Enter Year" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="semester" class="form-label">Semester:</label>
-                    <select id="semester" name="semester" class="form-select" required>
-                        <option selected disabled value="">Select Semester</option>
-                        <option>Semester 1</option>
-                        <option>Semester 2</option>
-                    </select>
-                </div>
-            </div>
-            
-            <!-- Name of Examination -->
             <div class="mb-3">
-                <label for="examName" class="form-label">Name of Examination:</label>
-                <select id="examName" name="examName" class="form-select" required>
-                    <option selected disabled value="">Select Exam Name</option>
-                    <option>General Degree Examination in Science, Level 1G</option>
-                    <option>BSc Degree Examination in Computer Science, Level 1S</option>
-                    <option>General Degree Examination in Science, Level 2G</option>
-                    <option>BSc Degree Examination in Computer Science, Level 2S</option>
-                    <option>General Degree Examination in Science, Level 3G</option>
-                    <option>BSc Degree Examination in Computer Science, Level 3S</option>
-                    <option>General Degree Examination in Science, Level 3M</option>
-                    <option>BSc Hons Degree Examination in Computer Science, Level 4S</option>
-                    <option>Honours Degree Examination in Computer Science, Level 4M</option>
-                </select>
+                <label for="CourseCode" class="form-label">Course Code:</label>
+                <input type="text" id="CourseCode" name="CourseCode" class="form-control" placeholder="Enter Course Code" required>
             </div>
+                
+            
+            
+            
             
             <!-- Exam Type -->
             <fieldset class="mb-3">
                 <legend class="col-form-label pt-0">Exam Type:</legend>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="examType" id="theory" value="Theory" required>
+                    <input class="form-check-input" type="radio" name="ExamType" id="theory" value="Theory">
                     <label class="form-check-label" for="theory">
                         Theory
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="examType" id="practical" value="Practical" required>
+                    <input class="form-check-input" type="radio" name="ExamType" id="practical" value="Practical">
                     <label class="form-check-label" for="practical">
                         Practical
                     </label>
                 </div>
             </fieldset>
-            
+
             <!-- Setting or Moderating -->
             <fieldset class="mb-3">
                 <legend class="col-form-label pt-0">Setting or Moderating:</legend>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="role" id="Setting" value="Setting" required>
+                    <input class="form-check-input" type="radio" name="PreparationType" id="Setting" value="Setting">
                     <label class="form-check-label" for="Setting">
                         Setting
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="role" id="Moderating" value="Moderating" required>
+                    <input class="form-check-input" type="radio" name="PreparationType" id="Moderating" value="Moderating">
                     <label class="form-check-label" for="Moderating">
                         Moderating
                     </label>
@@ -211,8 +118,8 @@ $user = $_SESSION['user'];
             
             <!-- Essay Duration -->
             <div class="mb-3">
-                <label for="essayDuration" class="form-label">Essay Duration:</label>
-                <select id="essayDuration" name="essayDuration" class="form-select" required>
+                <label for="EssayDuration" class="form-label">Essay Duration:</label>
+                <select id="EssayDuration" name="EssayDuration" class="form-select" required>
                     <option selected disabled value="">Select Duration</option>
                     <option>1 Hour</option>
                     <option>2 Hours</option>
@@ -220,16 +127,27 @@ $user = $_SESSION['user'];
                 </select>
             </div>
             
+            <!-- Amount for essay-->
+            <div class="mb-3">
+            <label for="EssayPayment" class="form-label">Essay Amount :</label>
+            <input type="text" id="EssayPayment" name="EssayPayment" class="form-control" readonly>
+            </div>
+
             <!-- Number of MCQ Questions -->
             <div class="mb-3">
-                <label for="mcqCount" class="form-label">Number of MCQ Questions:</label>
-                <input type="number" id="mcqCount" name="mcqCount" class="form-control" min="0" placeholder="Number of Questions" required>
+                <label for="MCQcount" class="form-label">Number of MCQ Questions:</label>
+                <input type="number" id="MCQcount" name="MCQcount" class="form-control" min="0" placeholder="Number of Questions" required>
+            </div>
+
+            <div class="mb-3">
+            <label for="MCQpayment" class="form-label"> MCQ Amount :</label>
+            <input type="text" id="MCQpayment" name="MCQpayment" class="form-control" readonly>
             </div>
             
             <!-- Typing Pages -->
             <div class="mb-3">
-                <label for="typingPages" class="form-label">Typing:</label>
-                <select id="typingPages" name="typingPages" class="form-select" required>
+                <label for="PageCount" class="form-label">Typing:</label>
+                <select id="PageCount" name="PageCount" class="form-select" required>
                     <option selected disabled value="">Select Pages</option>
                     <option>1 Page</option>
                     <option>2 Pages</option>
@@ -238,21 +156,104 @@ $user = $_SESSION['user'];
                     <option>5 Pages</option>
                 </select>
             </div>
+
+            <div class="mb-3">
+            <label for="TypingPayment" class="form-label">Typing Amount :</label>
+            <input type="text" id="TypingPayment" name="TypingPayment" class="form-control" readonly>
+            </div>
+            <!-- Packeting Supervision -->
+            <div class="mb-3">
+                <label for="supervisionAmount" class="form-label">Packeting Supervision:</label>
+                <input type="text" id="supervisionAmount" name="supervisionAmount" class="form-control" value="Rs. 0" readonly>
+            </div>
+
+
+            <!-- Total Amount -->
+            <div class="mb-3">
+                <label for="TotalAmount" class="form-label">Total Amount (Rs.):</label>
+                <input type="text" id="TotalAmount" name="TotalAmount" class="form-control" readonly>
+            </div>
+
+            
             
             <!-- Submit and Reset Buttons -->
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <button type="submit" class="btn btn-primary submit-btn">Submit</button>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <button type="reset" class="btn btn-secondary btn-danger reset-btn">Reset</button>
+            <div class="col-md-12 mb-3">
+                <button type="submit" class="btn btn-primary me-2 submit-btn">Submit</button>
+                <button type="reset" class="btn btn-secondary btn-danger reset-btn">Reset</button>
                 </div>
             </div>
-        </form>
+
+
+            
+
+<!-- JavaScript to calculate amount -->
+<script>
+    function updateTotalAmount() {
+        const EssayPayment = parseFloat(document.getElementById('EssayPayment').value.replace('Rs. ', '')) || 0;
+        const MCQpayment = parseFloat(document.getElementById('MCQpayment').value.replace('Rs. ', '')) || 0;
+        
+        const isSettingSelected = document.getElementById('Setting').checked;
+        const isModeratingSelected = document.getElementById('Moderating').checked;
+
+        // Set supervisionAmount and TypingPayment based on preparation type selection
+        const supervisionAmount = isSettingSelected ? 100 : 0;
+        const TypingPayment = isSettingSelected ? parseFloat(document.getElementById('TypingPayment').value.replace('Rs. ', '')) || 0 : 0;
+
+        // Update TypingPayment field to reflect zero for moderating
+        if (isModeratingSelected) {
+            document.getElementById('TypingPayment').value = "Rs. 0";
+        }
+
+        // Calculate total amount based on preparation type
+        let TotalAmount = EssayPayment + MCQpayment + supervisionAmount;
+        if (isSettingSelected) {
+            TotalAmount += TypingPayment;
+        }
+
+        // Display calculated total amount and supervision amount
+        document.getElementById('TotalAmount').value = `Rs. ${TotalAmount}`;
+        document.getElementById('supervisionAmount').value = `Rs. ${supervisionAmount}`;
+    }
+
+    
+    document.getElementById('Setting').addEventListener('change', updateTotalAmount);
+    document.getElementById('Moderating').addEventListener('change', updateTotalAmount);
+
+    document.getElementById('EssayDuration').addEventListener('change', function() {
+        const duration = parseInt(this.value);
+        const ratePerHour = 400;
+        const EssayPayment = duration * ratePerHour;
+        document.getElementById('EssayPayment').value = EssayPayment ? `Rs. ${EssayPayment}` : '';
+        updateTotalAmount();
+    });
+
+    document.getElementById('MCQcount').addEventListener('change', function() {
+        const count = parseInt(this.value);
+        const ratePerQs = 50;
+        const MCQpayment = count * ratePerQs;
+        document.getElementById('MCQpayment').value = MCQpayment ? `Rs. ${MCQpayment}` : '';
+        updateTotalAmount();
+    });
+
+    document.getElementById('PageCount').addEventListener('change', function() {
+        const pages = parseInt(this.value);
+        const ratePerPage = 100;
+        const TypingPayment = pages * ratePerPage;
+        document.getElementById('TypingPayment').value = TypingPayment ? `Rs. ${TypingPayment}` : '';
+        updateTotalAmount();
+    });
+
+    updateTotalAmount();
+</script>
+
+
+    </form>
+
     </div>
 
-    <!-- Bootstrap JS Bundle (Includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

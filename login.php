@@ -2,20 +2,53 @@
 session_start();
 include 'config.php';
 
-// Assume a simple database query for user validation
+$error_message = '';
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-    $result = mysqli_query($conn, $query);
+    $stmt = $conn->prepare("
+        SELECT users.username, users.password, users.usertype, userdetails.name 
+        FROM users
+        LEFT JOIN userdetails ON users.username = userdetails.username 
+        WHERE users.username = ?
+    ");
 
-    if (mysqli_num_rows($result) == 1) {
-        $user = mysqli_fetch_assoc($result);
-        $_SESSION['user'] = $user;
-        header('Location: dashboard.php');
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+
+        
+        if ($password == $user['password']) {
+            $_SESSION['user'] = $user;
+
+           
+            if ($user['usertype'] == "Management Assistant") {
+                header('Location: approval.php');
+                exit; 
+            }
+            if ($user['usertype'] == "Staff") {
+                header('Location: staffView.php');
+                exit;
+            }
+            if ($user['usertype'] == "Head") {
+                header('Location: dashboardDCSHead.php');
+                exit;
+            }
+        } else {
+            $_SESSION['error_message'] = 'Incorrect password. Please try again.';
+            header('Location: index.php');
+            exit;
+        }
     } else {
-        echo "Invalid login details";
+        $_SESSION['error_message'] = 'Username not found. Please check your username.';
+        header('Location: index.php');
+        exit;
     }
 }
 ?>
