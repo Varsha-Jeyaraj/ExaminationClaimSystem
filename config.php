@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect('localhost', 'root', '', 'examination_claim_system');
+$conn = mysqli_connect('localhost', 'root', '', 'group12');
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
